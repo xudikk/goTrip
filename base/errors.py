@@ -229,7 +229,7 @@ MSG = {
         "ru": "Переводы с для карты невозможны",
         'en': "Transfers cannot be made to this card"
     },
-    'UQBCYO': {
+    'DeviceRevokeDenited': {
         "uz": "Ushbu qurulma boshqalarini chiqarib yubora olmaydi",
         "ru": "Это устройство не может отозвать другое",
         "en": "This device can't revoke another one",
@@ -249,7 +249,7 @@ MSG = {
         'ru': 'У вас нет разрешения на выполнение этого действия',
         'en': "You do not have permission to perform this action",
     },
-    'SBQOYO': {
+    'UserRevokeDenited': {
         "uz": "Siz bu qurulmani o'chirib yubora olmaysiz",
         "ru": "Вы не можете отозвать это устройство",
         "en": "You can't revoke this device",
