@@ -23,6 +23,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 1)
 DEBUG = os.getenv('DEBUG', True)
 ALLOWED_HOSTS = ['*'] if DEBUG else os.getenv('ALLOWED_HOSTS').split(',')
 
+METHODS = os.getenv('AUTH_METHODS', '').split(',')
+
 AUTH_USER_MODEL = 'core.User'
 
 # Application definition
@@ -61,7 +63,7 @@ ROOT_URLCONF = 'src.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -3,6 +3,7 @@
 #  Please contact before making any changes
 #
 #  Tashkent, Uzbekistan
+from django.conf import settings
 from methodism import custom_response, MESSAGE, exception_data
 from re import compile as re_compile
 
@@ -20,7 +21,7 @@ class GTMain(CustomMETHODISM):
     token_key = "GoBearer"
     auth_headers = 'GoTrip-Authorization'
     token_class = Token
-    not_auth_methods = []
+    not_auth_methods = settings.METHODS
     get_methods = get_methods
 
     def get(self, request, *args, **kwargs):

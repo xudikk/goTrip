@@ -8,7 +8,8 @@ import datetime
 import random
 
 from django.conf import settings
-from methodism import custom_response, code_decoder, exception_data
+from methodism import custom_response, code_decoder, exception_data, generate_key
+import uuid
 
 from base.helper import lang_helper
 from base.errors import MSG
