@@ -8,6 +8,8 @@ from rest_framework.authtoken import models as authtoken
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from core.models.auth import User
+
 
 class Token(authtoken.Token):
     key = models.CharField(_("Key"), primary_key=True, max_length=512)

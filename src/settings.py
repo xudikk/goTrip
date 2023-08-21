@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-APP_NAME = "Poytaxt Mobile"
+APP_NAME = "Go Trip"
 
 load_dotenv()
 
@@ -23,7 +23,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 1)
 DEBUG = os.getenv('DEBUG', True)
 ALLOWED_HOSTS = ['*'] if DEBUG else os.getenv('ALLOWED_HOSTS').split(',')
 
-AUTH_USER_MODEL = 'api.User'
+AUTH_USER_MODEL = 'core.User'
 
 # Application definition
 

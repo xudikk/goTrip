@@ -41,23 +41,33 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
-    everf = models.BooleanField(default=False)  # email verification
-    lang = models.CharField(default='uz', choices=[("uz", 'uz'), ("ru", 'ru'), ("en", 'en')])
+    everf = models.BooleanField(default=False, editable=False)  # email verification
+    lang = models.CharField(default='uz', max_length=2, choices=[("uz", 'uz'), ("ru", 'ru'), ("en", 'en')])
+    ut = models.SmallIntegerField(verbose_name="User Type", default=3, choices=[
+        (1, 'Director'),
+        (2, "Admin"),
+        (3, "User"),
+    ])  # user type
 
     created = models.DateTimeField(auto_now_add=True, auto_now=False, null=True, editable=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True, null=True)
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'phone'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['ut']
 
     class Meta:
         verbose_name_plural = "1. Users"
 
     def personal(self):
-
+        ut = {1: 'Director',
+              2: "Admin",
+              3: "User",
+              }[self.ut]
         return {
             'first_name': self.first_name,
             'last_name': self.last_name,
-            'mobile': self.phone
+            'mobile': self.phone,
+            'lang': self.lang,
+            'user_type': ut,
         }
