@@ -5,10 +5,8 @@
 #  Tashkent, Uzbekistan
 from methodism.helper import custom_response as cr
 
-from .auth import login, logout, auth_one, auth_two, regis, resent_otp
-from .settings import set_lang, user_info
-
-
+from .auth import login, auth_one, auth_two, regis, resent_otp
+from .settings import set_lang, check_pass, change_pass, user_edit
 
 
 """ Method Names Getter """
@@ -16,6 +14,6 @@ from .settings import set_lang, user_info
 unusable_method = dir()
 
 
-def method_names(requests, params):
+def method_names(requests):
     return cr(True, data=[x.replace('_', '.') for x in unusable_method if '__' not in x and x != 'cr'])
 

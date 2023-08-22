@@ -9,7 +9,7 @@ from re import compile as re_compile
 
 from rest_framework.response import Response
 
-from base.custom import CustomMETHODISM
+from base.custom import CustomMETHODISM, method_checker
 from base.helper import lang_helper
 from core.models.tokens import Token
 from core import v1
@@ -24,6 +24,7 @@ class GTMain(CustomMETHODISM):
     not_auth_methods = settings.METHODS
     get_methods = get_methods
 
+    @method_checker
     def get(self, request, *args, **kwargs):
         method = request.GET.get("method")
         headers = request.headers

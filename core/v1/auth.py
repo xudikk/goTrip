@@ -77,7 +77,7 @@ def regis(request, params):
 
     # check otp
     otp = Otp.objects.filter(key=params['token']).first()
-    if not otp: return custom_response(False, message=MSG['OTPTokenError'])
+    if not otp: return custom_response(False, message=MSG['OTPTokenError'][lang_helper(request)])
     if otp.step != 'regis': return custom_response(False, message=MSG['TokenUnUsable'][lang_helper(request)])
     if not otp.is_verified: return custom_response(False, message=MSG['TokenUnUsable'][lang_helper(request)])
     if (datetime.datetime.now() - otp.created).total_seconds() > 180:
@@ -85,8 +85,7 @@ def regis(request, params):
         otp.save()
         return custom_response(False, message=MSG['OTPExpired'][lang_helper(request)])
     data = {'phone': params['phone'], 'password': params['password'], 'first_name': params.get('first_name', ''),
-            'last_name': params.get('last_name', ''), 'email': params.get('email', ''), 'avatar': 'avatar',
-            'is_sms': False}
+            'last_name': params.get('last_name', ''), 'email': params.get('email', ''), 'avatar': 'avatar'}
     user = User.objects.create_user(**data)
 
     # create fixtures
@@ -94,7 +93,8 @@ def regis(request, params):
     otp.step, user.last_login = 'registered', datetime.datetime.now()
     otp.save()
     user.save()
-    return custom_response(status=True, data={'access_token': token.key, 'mobile': user.phone})
+    return custom_response(status=True, data={'access_token': token.key, 'mobile': user.phone},
+                           message=MSG['Success'][lang_helper(request)])
 
 
 def login(request, params):
@@ -121,7 +121,7 @@ def login(request, params):
     return custom_response(True, data={"token": token.key})
 
 
-def logout(request, params):
+def logout(request):
     token = Token.objects.filter(user=request.user).first()
     if token:
         ExpiredToken.objects.create(user=token.user, key=token.key)

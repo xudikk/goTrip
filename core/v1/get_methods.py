@@ -5,6 +5,7 @@
 #  Tashkent, Uzbekistan
 
 from .settings import user_info
+from .auth import logout
 
 
 

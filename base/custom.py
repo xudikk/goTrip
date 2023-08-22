@@ -26,6 +26,15 @@ def method_params_checker(funk):
 
     return wrapper
 
+def method_checker(funk):
+    def wrapper(self, req, *args, **kwargs):
+        method = req.GET.get("method", None)
+        response = {
+            not method: Response(custom_response(status=False, method=method, message=MESSAGE['MethodMust'][lang_helper(req)])),
+        }
+        return response.get(True) or funk(self, req, *args, **kwargs)
+
+    return wrapper
 
 class CustomMETHODISM(METHODISM):
 
