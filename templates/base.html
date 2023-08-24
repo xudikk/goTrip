@@ -879,7 +879,7 @@
                                           <svg class="svg-icon mr-0 text-secondary" id="h-05-p" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                           </svg>
-                                          <a href="../backend/auth-sign-in.html">Logout</a>
+                                          <a href="#" data-target="#logoutModal_1">Logout</a>
                                       </li>
                                   </ul>
                               </li>
@@ -919,6 +919,27 @@
             </div>
         </div>
     </footer>    <!-- Backend Bundle JavaScript -->
+
+        <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Chiqmoqchimisz</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" data-dismiss="modal">Yoq</button>
+                    <a class="btn btn-danger" href="{% url 'log_out' %}">Ha</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="{% static 'assets/js/backend-bundle.min.js' %}"></script>
     <!-- Chart Custom JavaScript -->
     <script src="{% static 'assets/js/customizer.js' %}"></script>
