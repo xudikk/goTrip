@@ -1,15 +1,23 @@
+#  Created by Xudoyberdi Egamberdiyev
+#
+#  Please contact before making any changes
+#
+#  Tashkent, Uzbekistan
 import datetime
 import random
 
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from methodism import code_decoder
 
 from core.models import User, Otp
+from methodism import generate_key
+import uuid
 
 
-def loginn(requests):
+def sign_in(requests):
     if not requests.user.is_anonymous:
         return redirect("home")
 
@@ -25,19 +33,16 @@ def loginn(requests):
         if not user.is_active:
             return render(requests, 'pages/auth/login.html', {"error": "Profil active emas "})
 
-        code = random.randint(100000, 999999)
-        key = code_decoder(code)
+        otp = random.randint(int(f'1{"0" * (settings.RANGE - 1)}'), int('9' * settings.RANGE))
+        # shu yerda sms chiqib ketadi
+        code = eval(settings.CUSTOM_HASHING)
+        hash = code_decoder(code, l=settings.RANGE)
+        token = Otp.objects.create(key=hash, mobile=data['phone'], step='one', extra={"via": "template"})
 
-        a = Otp.objects.create(
-            key=key,
-            mobile=user.phone,
-            step="login",
-        )
-
-        requests.session['user_id'] = a.id
-        requests.session['otp_token'] = a.key
-        requests.session['code'] = code
-        requests.session['phone'] = a.mobile
+        requests.session['user_id'] = user.id
+        requests.session['otp_token'] = token.key
+        requests.session['code'] = otp
+        requests.session['phone'] = token.mobile
         return redirect('otp')
     return render(requests, 'pages/auth/login.html')
 
@@ -62,8 +67,9 @@ def otp(request):
             otp.is_expired = True
             otp.save()
             return render(request, "pages/auth/otp.html", {"error": "Vaqt tugadi!!!"})
-
-        if int(code_decoder(otp.key, decode=True, l=1)) != int(code):
+        unhashed = code_decoder(otp.key, decode=True, l=settings.RANGE)
+        code = eval(settings.UNHASH)
+        if int(code) != int(code):
             otp.tries += 1
             otp.save()
             return render(request, "pages/auth/otp.html", {"error": "Cod hato!!!"})
@@ -92,24 +98,20 @@ def resent_otp(request):
     old.is_expired = True
     old.save()
 
-    code = random.randint(100000, 999999)
-    # send_sms(998951808802,code)
-    key = code_decoder(code)
+    otp = random.randint(int(f'1{"0" * (settings.RANGE - 1)}'), int('9' * settings.RANGE))
+    # shu yerda sms chiqib ketadi
+    code = eval(settings.CUSTOM_HASHING)
+    hash = code_decoder(code, l=settings.RANGE)
+    token = Otp.objects.create(key=hash, mobile=old.mobile, step='login', extra={"via": "template"})
 
-    otp = Otp.objects.create(
-        key=key,
-        mobile=old.mobile,
-        step='login'
-    )
-    otp.save()
+    request.session['otp_token'] = token.key
+    request.session['code'] = otp
+    request.session['phone'] = token.mobile
 
-    request.session["code"] = code
-    request.session["phone"] = otp.mobile
-    request.session["otp_token"] = otp.key
     return redirect("otp")
 
 
 @login_required(login_url='login')
-def log_out(request):
+def sign_out(request):
     logout(request)
     return redirect("login")

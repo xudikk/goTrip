@@ -25,7 +25,7 @@ def auth_one(request, params):
     # shu yerda sms chiqib ketadi
     code = eval(settings.CUSTOM_HASHING)
     hash = code_decoder(code, l=settings.RANGE)
-    token = Otp.objects.create(key=hash, mobile=params['phone'], step='one')
+    token = Otp.objects.create(key=hash, mobile=params['phone'], step='one', extra={"via": "api"})
 
     return custom_response(True, data={
         "otp": otp,

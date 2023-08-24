@@ -3,7 +3,7 @@
 #  Please contact before making any changes
 #
 #  Tashkent, Uzbekistan
-
+from django.shortcuts import redirect
 from methodism import METHODISM, custom_response, MESSAGE, exception_data
 from re import compile as re_compile
 
@@ -26,15 +26,34 @@ def method_params_checker(funk):
 
     return wrapper
 
+
 def method_checker(funk):
     def wrapper(self, req, *args, **kwargs):
         method = req.GET.get("method", None)
         response = {
-            not method: Response(custom_response(status=False, method=method, message=MESSAGE['MethodMust'][lang_helper(req)])),
+            not method: Response(
+                custom_response(status=False, method=method, message=MESSAGE['MethodMust'][lang_helper(req)])),
         }
         return response.get(True) or funk(self, req, *args, **kwargs)
 
     return wrapper
+
+
+def permission_checker(funk):
+    def wrapper(request, *args, **kwargs):
+        response = {
+            not request.user.is_active: redirect('login'),
+            not request.user.is_staff: redirect('login'),
+            request.user.is_anonymous: redirect('login'),
+        }
+
+        if request.user.ut != 1:
+            return redirect('home')
+
+        return response.get(True) or funk(request, *args, **kwargs)
+
+    return wrapper
+
 
 class CustomMETHODISM(METHODISM):
 
