@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %} List | Users {% endblock %}
+
+
+{% block content %}
+
+               <div class="card">
+                  <div class="card-header d-flex justify-content-between">
+                     <div class="header-title">
+                        <h4 class="card-title">Users</h4>
+                     </div>
+                  </div>
+                  <div class="card-body">
+                     <div class="table-responsive">
+                        <table id="datatable-1" class="table data-table table-striped table-bordered" >
+                           <thead>
+                              <tr>
+                                 <th>Ism</th>
+                                 <th>Familiya</th>
+                                 <th>Telefon Raqam</th>
+                                 <th>User Type</th>
+                                 <th>Start date</th>
+                                 <th>Action</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {% for i in root %}
+                                 <tr>
+                                    <td>{{ i.first_name }}</td>
+                                    <td>{{ i.last_name }}</td>
+                                    <td>{{ i.phone }}</td>
+                                    {% if i.ut == 1 %}
+                                    <td>Director</td>
+                                    {% elif i.ut == 2 %}
+                                    <td>Admin</td>
+                                    {% else %}
+                                    <td>User</td>
+                                    {% endif %}
+                                    <td>{{ i.created }}</td>
+                                    <td> Keyinchali actionlar bo'ladi </td>
+                                 </tr >
+                              {% endfor %}
+                           </tbody>
+<!--                           <tfoot>-->
+<!--                              <tr>-->
+<!--                                 <th>Name</th>-->
+<!--                                 <th>Position</th>-->
+<!--                                 <th>Office</th>-->
+<!--                                 <th>Age</th>-->
+<!--                                 <th>Start date</th>-->
+<!--                                 <th class="text-right">Salary</th>-->
+<!--                              </tr>-->
+<!--                           </tfoot>-->
+                        </table>
+                     </div>
+                  </div>
+               </div>
+
+
+{% endblock %}
