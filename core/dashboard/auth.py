@@ -69,7 +69,7 @@ def otp(request):
             return render(request, "pages/auth/otp.html", {"error": "Vaqt tugadi!!!"})
         unhashed = code_decoder(otp.key, decode=True, l=settings.RANGE)
         unhash_code = eval(settings.UNHASH)
-        if int(unhash_code) != int(unhashed):
+        if int(unhash_code) != int(code):
             otp.tries += 1
             otp.save()
             return render(request, "pages/auth/otp.html", {"error": "Cod hato!!!"})
