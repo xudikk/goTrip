@@ -35,6 +35,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255, null=True)
     email = models.CharField(max_length=255, null=True)
     avatar = models.CharField(max_length=255, null=True)
+    gender = models.BooleanField(default=True)
 
     is_test = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
